@@ -85,6 +85,7 @@ class Player:
             if option == "yes" or option == "y":
                 self.addHealth(random.randrange(1, 5))
         else:
+            println("Here is what you finished with: "+str(self.inventory))
             DeathScreen(self.points)
             println("You finished with a score of "+str(self.points))
             println("Here is what you finished with: "+str(self.inventory))
@@ -199,6 +200,10 @@ def viewInventory(object):
     if view == "yes" or view == "y":
         println("Your Inventory:")
         println(object.inventory)
+        println("Got "+str(len(object.inventory))+"/3")
+        if "Wimp Ticket" in object.inventory:
+            println("Umm are you seeing more items than 3?")
+            println("That because you paid the Thief and were too Scared to fight!!")
     else:
         return
 
@@ -219,7 +224,7 @@ def pathway(newPlayer):
         newPlayer.purchase("Wimp Ticket")
         if "Wimp Ticket" in newPlayer.inventory:
             println("Thief: You may continue you wimp!!")
-            victoryScreen(newPlayer.points)
+            victoryScreen(newPlayer)
         else:
             println("WHAT!! how dare you. Get out of here")
             newPlayer.death()
@@ -240,7 +245,7 @@ def pathway(newPlayer):
                 println("Thief: Ahh you won")
                 newPlayer.earnPoints(70)
                 println("You have been awarded 70 points")
-                victoryScreen(newPlayer.points)
+                victoryScreen(newPlayer)
                 gameDraw = False
 
             elif user == "ROCK" and ThiefChoice == "PAPER":
@@ -254,7 +259,7 @@ def pathway(newPlayer):
                 println("Thief: Ahh you won")
                 newPlayer.earnPoints(70)
                 println("You have been awarded 70 points")
-                victoryScreen(newPlayer.points)
+                victoryScreen(newPlayer)
                 gameDraw = False
 
             elif user == "PAPER" and ThiefChoice == "SCISSORS":
@@ -266,7 +271,7 @@ def pathway(newPlayer):
                 println("Thief: Ahh you won")
                 newPlayer.earnPoints(70)
                 println("You have been awarded 70 points")
-                victoryScreen(newPlayer.points)
+                victoryScreen(newPlayer)
                 gameDraw = False
 
             elif user == "SCISSORS" and ThiefChoice == "ROCK":
@@ -419,8 +424,9 @@ def startGame():
     sys.exit()
 
 
-def quitGame():
+def quitGame(object):
     pygame.quit()  # pylint: disable=no-member
+    viewInventory(object)
     sys.exit()
 
 
@@ -431,6 +437,8 @@ def game():
     println(wizard+"Hello Fellow Traveller")
     println(wizard+"I Notice you come from afar, What is your name? Tell me you must")
     name = input(">>>")
+    while name == "":
+        name = input("NAME!!! >>>")
     print(" ")
     time.sleep(5)
     println(wizard+"Ahhh, Hello There "+name+" A great Mission for you I have")
@@ -453,7 +461,7 @@ def game():
         sys.exit()
 
 
-def button(x, y, width, height, inactive, active, action=None):
+def button(x, y, width, height, inactive, active, object=None, action=None):
     """Generate a pygame button. The cur is the position of the button and 
     then the boundary is check to see if the user is hovering
 
@@ -478,7 +486,7 @@ def button(x, y, width, height, inactive, active, action=None):
             if action == "startGame":
                 startGame()
             elif action == "quitGame":
-                quitGame()
+                quitGame(object)
     else:
         pygame.draw.rect(gameDisplay, active, (x, y, width, height))
 
@@ -572,7 +580,7 @@ def DeathScreen(score):
         clock.tick(FPS)
 
 
-def victoryScreen(score):
+def victoryScreen(object):
     # Render The final screen
     global gameDisplay
 
@@ -581,7 +589,7 @@ def victoryScreen(score):
 
     pygame.display.update()
     mainText = "Congratulations"
-    score = "Score: "+str(score)
+    score = "Score: "+str(object.points)
     message = "You have just completed the very randomised game which I doubted was possible."
     #extra = "You either had imense luck! or you took the easy route?"
     title = fontLarge.render(mainText, True, white)
@@ -610,13 +618,14 @@ def victoryScreen(score):
         #gameDisplay.blit(extraText, extraRect)
 
         button(X//2 - 150, Y//1.5, 100, 50,
-               darkWhite, white, action="startGame")
+               darkWhite, white, object, action="startGame")
         btn_text = fontInst.render("Play Again", True, gray)
         btnRect = btn_text.get_rect()
         btnRect.center = (X//2 - 100, Y//1.5 + 25)
         gameDisplay.blit(btn_text, btnRect)
 
-        button(X//2 + 50, Y//1.5, 100, 50, darkWhite, white, action="quitGame")
+        button(X//2 + 50, Y//1.5, 100, 50, darkWhite,
+               white, object, action="quitGame")
         btn_textTwo = fontInst.render("Exit", True, gray)
         btnRectTwo = btn_textTwo.get_rect()
         btnRectTwo.center = (X//2 + 100, Y//1.5 + 25)
