@@ -8,7 +8,7 @@
 
 ## Modules needed to run:
 
-- (Pygame)[https://www.pygame.org/]
+- [Pygame](https://www.pygame.org/)
 - Random (Python Standard Library)
 - Sys (Python Standard Library)
 - Time (Python Standard Library)
