@@ -4,7 +4,7 @@ But feel free to attempt to understand this mess of objects and functions.
 
 BRIEF: Development of a text-based adventure game that eplores different parts of the world
 
-NOTE: Initially I made an API call see other file (april_challenge,py), but the data wasn't quiet as I needed it.
+NOTE: Initially I made an API call see other file (april_challenge,py), but the data wasn't quite as I needed it.
 """
 
 # Module imports;
