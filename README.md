@@ -5,6 +5,7 @@
 - april_challenge.py -> The main logic of the game. Character Objects and functions
 - userinterface.py -> The pygame code. For the UI Logic
 - game.py -> The Final Game Combined with Logic and UI
+- The .vscode folder was generated to change my version of python in vscode. (Not needed to run)
 
 ## Modules needed to run:
 
